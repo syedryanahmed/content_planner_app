@@ -1,7 +1,4 @@
 import streamlit as st
-import json
-import os
-from datetime import datetime
 
 st.set_page_config(page_title="Content Planner", layout="centered")
 
@@ -13,46 +10,9 @@ if "youtube" not in st.session_state:
 if "tiktok" not in st.session_state:
     st.session_state.tiktok = []
 
-# Analytics tracking
-if "analytics" not in st.session_state:
-    st.session_state.analytics = {
-        "total_visits": 0,
-        "last_visit": None,
-        "platform_usage": {
-            "instagram": 0,
-            "youtube": 0,
-            "tiktok": 0
-        }
-    }
-
-# Update analytics
-st.session_state.analytics["total_visits"] += 1
-st.session_state.analytics["last_visit"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
 st.title("📱 Content Planner")
 
-# Analytics display
-st.markdown("---")
-st.subheader("📊 Analytics")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Total Visits", st.session_state.analytics["total_visits"])
-with col2:
-    st.metric("Last Visit", st.session_state.analytics["last_visit"])
-with col3:
-    st.metric("Platform Usage", sum(st.session_state.analytics["platform_usage"].values()))
-
-# Platform usage breakdown
-st.markdown("### Platform Usage Breakdown")
-for platform, count in st.session_state.analytics["platform_usage"].items():
-    st.write(f"- {platform.title()}: {count} times")
-st.markdown("---")
-
 platform = st.selectbox("Choose Platform", ["Instagram Reels", "YouTube Shorts", "TikTok"])
-
-# Update platform usage
-platform_key = platform.lower().replace(" ", "")
-st.session_state.analytics["platform_usage"][platform_key] += 1
 
 st.subheader(f"📝 Add {platform} Content")
 
